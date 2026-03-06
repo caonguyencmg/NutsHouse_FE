@@ -2,7 +2,7 @@ import { Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { useEffect } from "react";
 import { useState } from "react";
-import "antd/dist/antd.css";
+
 const UploadImgs = ({ listImgs }) => {
   const [fileList, setFileList] = useState([]);
 

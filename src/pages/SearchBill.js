@@ -7,24 +7,18 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { isLogin } from "../reducers/authReducer";
 
-const Login = () => {
-  const [login, setLogin] = useState({
-    userName: "",
-    password: "",
-  });
+const SearchBill = () => {
+  const [billCode, setBillCode] = useState("");
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleOnChange = (value, id) => {
-    setLogin({
-      ...login,
-      [id]: value,
-    });
+    setBillCode(value);
   };
 
   const handleSubmit = async () => {
     try {
-      let data = await userLogin(login);
+      let data = await userLogin({ billCode });
       if (data && data.status === 200) {
         dispatch(isLogin());
         navigate("/admin");
@@ -51,64 +45,41 @@ const Login = () => {
   return (
     <>
       <Header></Header>
-      <div className="flex flex-col items-center justify-center h-[100vh]">
-        <div className="overflow-auto max-h-[70vh] w-[300px]">
+      <div className="flex flex-col items-center mt-[76px] h-[100vh]">
+        <div className="flex flex-col pt-5 max-h-[70vh] container justify-center items-center">
+          <div className="text-2xl mb-4">Tra cứu đơn hàng</div>
           <Form
             form={form}
             layout="vertical"
+            className="w-[300px]"
             name="form"
             onFinish={handleSubmit}
             fields={[
               {
-                name: ["userName"],
-                value: login.userName,
-              },
-              {
-                name: ["password"],
-                value: login.password,
+                name: ["billCode"],
+                value: billCode,
               },
             ]}
           >
             <Form.Item
-              label="Username"
-              name="userName"
+              label={<span>Mã đơn hàng</span>}
+              name="billCode"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập Họ và tên",
+                  message: "Vui lòng nhập Mã đơn hàng",
                 },
               ]}
             >
               <Input
                 type="text"
-                placeholder="Username"
-                name="userName"
+                placeholder="Mã đơn hàng"
+                name="billCode"
                 onChange={(e) => {
-                  handleOnChange(e.target.value, "userName");
+                  handleOnChange(e.target.value, "billCode");
                 }}
-                value={login.userName}
-                id="userName"
-              ></Input>
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập Họ và tên",
-                },
-              ]}
-            >
-              <Input
-                type="password"
-                placeholder="Passwork"
-                name="password"
-                onChange={(e) => {
-                  handleOnChange(e.target.value, "password");
-                }}
-                value={login.fullname}
-                id="password"
+                value={billCode}
+                id="billCode"
               ></Input>
             </Form.Item>
 
@@ -117,7 +88,7 @@ const Login = () => {
                 className="py-4 px-8 bg-red-500 rounded-md text-white flex items-center gap-2 justify-center hover:bg-red-600 h-[46px]"
                 type="submit"
               >
-                Đăng nhập
+                Tra cứu đơn hàng
               </button>
             </div>
           </Form>
@@ -127,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SearchBill;
