@@ -208,11 +208,7 @@ const BuyProducts = ({
                   ]}
                 >
                   <Form.Item
-                    label={
-                      <span>
-                        Họ và tên <span className="text-red-500">*</span>
-                      </span>
-                    }
+                    label="Họ và tên"
                     name="billfullname"
                     rules={[
                       {
@@ -233,11 +229,7 @@ const BuyProducts = ({
                     ></Input>
                   </Form.Item>
                   <Form.Item
-                    label={
-                      <span>
-                        Số điện thoại <span className="text-red-500">*</span>
-                      </span>
-                    }
+                    label="Số điện thoại"
                     name="billphoneNumber"
                     rules={[
                       {

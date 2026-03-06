@@ -30,7 +30,7 @@ const Header = () => {
     { name: "Trang chủ", link: "/", isLogin: true },
     { name: "Quản lý đơn", link: "/admin", isLogin: true },
     { name: "Quản lý sản phẩm", link: "/admin/import", isLogin: true },
-    { name: "Đơn hàng của tôi", link: "/admin/import", isLogin: false },
+    { name: "Đơn hàng của tôi", link: "/user/orders", isLogin: false },
     { name: "Đăng xuất", isLogin: true },
     // {
     //   name: "Cuộc thi",
@@ -61,7 +61,10 @@ const Header = () => {
 
   return (
     <div className="relative">
-      <div className="top-0 fixed z-50 w-full bg-[#91D7DB] " ref={nodeRef}>
+      <div
+        className="top-0 fixed z-50 w-full bg-[#91D7DB] max-h-[76px]"
+        ref={nodeRef}
+      >
         <div className="flex container justify-between">
           <div className="flex gap-4 md:gap-8 w-full">
             <span
@@ -140,7 +143,7 @@ const Header = () => {
             {/*Logo  */}
             <NavLink
               to={"/"}
-              className="flex items-center min-w-[60px] lg:min-w-[220px] gap-2"
+              className="flex items-center min-w-[60px] lg:min-w-[220px] gap-2 text-[#002025]"
             >
               <img
                 className="w-[60px] h-[60px]"
@@ -161,12 +164,16 @@ const Header = () => {
                   return (
                     <li
                       key={index}
-                      className={`p-2 text-xl font-medium text-[#002025] menu-item ${
-                        activeLink(item) ? "active-menu" : ""
-                      }`}
+                      className="p-2 text-xl font-medium  menu-item"
                     >
                       {item.link ? (
-                        <NavLink to={item.link} id="navbarDropdownMenuLink">
+                        <NavLink
+                          className={`text-[#002025] ${
+                            activeLink(item) ? "active-menu" : ""
+                          }`}
+                          to={item.link}
+                          id="navbarDropdownMenuLink"
+                        >
                           {item.name}
                         </NavLink>
                       ) : (
