@@ -1,57 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
-
+import { Route, Routes, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ShoppingCard from "./pages/ShoppingCard";
+import Login from "./pages/Login";
+import "./common.scss";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Admin from "./pages/admin";
+import Products from "./pages/admin/products";
+import { useSelector } from "react-redux";
 function App() {
+  const isAuth = useSelector((state) => {
+    return state?.authen?.isLogin;
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/card" element={<ShoppingCard />} />
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/admin"
+        element={isAuth ? <Admin /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/admin/import"
+        element={isAuth ? <Products /> : <Navigate to="/login" replace />}
+      />
+
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 
