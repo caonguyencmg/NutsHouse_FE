@@ -6,7 +6,6 @@ import { getListProduct } from "../../service/productService";
 import DeletePopup from "../../component/layout/deletePopup";
 import { toast } from "react-toastify";
 import UpdateProduct from "../updateProduct.js";
-import { Input } from "antd";
 
 const Products = () => {
   const [listProducts, setListProducts] = useState([]);
@@ -14,11 +13,10 @@ const Products = () => {
   const [deleteProductId, setDeleteProductId] = useState();
   const [productDetail, setProductDetail] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [searchText, setSearchText] = useState("");
   const [select, setSelect] = useState("");
 
-  const getListProducts = async () => {
-    let response = await getListProduct();
+  const getListProducts = async (status) => {
+    let response = await getListProduct(status);
     if (response && response.statusCode === 200) {
       const products = response.products.map((item) => ({
         ...item,
@@ -68,7 +66,7 @@ const Products = () => {
             className="w-full min-w-[180px] h-11 bg-[#e5e7eb] rounded-md px-2"
             onChange={(e) => {
               setSelect(e.target.value);
-              getListProducts(searchText, e.target.value);
+              getListProducts(e.target.value);
             }}
             value={select}
           >
@@ -79,13 +77,13 @@ const Products = () => {
               Tất cả trạng thái
             </option>
             <option
-              value="0"
+              value={1}
               className="text-green-500 bg-white font-medium border-b border-gray-400"
             >
               Còn hàng
             </option>
             <option
-              value="1"
+              value={0}
               className="text-red-500 bg-white font-medium border-b border-gray-400"
             >
               Hết hàng
@@ -93,27 +91,10 @@ const Products = () => {
           </select>
         </div>
         <div className="flex gap-2">
-          <Input
-            type="text"
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-            name="searchText"
-            id="searchText"
-            className="!border !border-gray-500 !bg-white"
-            value={searchText || ""}
-          ></Input>
-          <button
-            className="p-2 mb-4 min-w-[100px] bg-blue-400 rounded-md cursor-pointer"
-            onClick={() => getListProducts(searchText, select)}
-          >
-            Tìm kiếm
-          </button>
           <button
             className="p-2 mb-4 min-w-[80px] bg-red-400 rounded-md cursor-pointer"
             onClick={() => {
               getListProducts();
-              setSearchText("");
               setSelect("");
             }}
           >
@@ -256,6 +237,7 @@ const Products = () => {
         handleClose={() => {
           setShowModal(false);
         }}
+        callBackGetList={getListProducts}
       ></UpdateProduct>
     </div>
   );
