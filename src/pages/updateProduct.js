@@ -3,14 +3,15 @@ import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
 import "./index.scss";
 
-import { editBill } from "../service/userService";
 import { Form, Input } from "antd";
 import { number_to_price } from "../helper/common";
 import UploadImgs from "../component/upload/UploadImgs";
+import { editProduct } from "../service/productService";
 const UpdateProduct = ({
   open = false,
   handleClose = () => {},
   productDetail,
+  callBackGetList,
 }) => {
   const [dataBill, setDataBill] = useState({
     id: "",
@@ -22,34 +23,53 @@ const UpdateProduct = ({
   });
   const [errMess, setErrMess] = useState("");
   const [success, setSuccess] = useState("");
+  const [fileList, setFileList] = useState([]);
 
   const [form] = Form.useForm();
   const { TextArea } = Input;
 
   const handleSubmit = async () => {
-    let updateData = {
-      id: dataBill.id,
-      date: dataBill.date,
-      description: dataBill.description,
-    };
+    const formData = new FormData();
+
+    formData.append("id", dataBill.id);
+    formData.append("date", dataBill.date);
+    formData.append("description", dataBill.description);
+    formData.append("name", dataBill.name);
+    formData.append("price", dataBill.price);
+    formData.append("quantity", dataBill.quantity);
+
+    fileList.forEach((file) => {
+      if (file.originFileObj) {
+        // ảnh mới
+        formData.append("newImages", file.originFileObj);
+      } else if (file.url) {
+        // ảnh cũ
+        formData.append(
+          "oldImages",
+          file.url.replaceAll(process.env.REACT_APP_BACKEND_URL, ""),
+        );
+      }
+    });
+
     setErrMess("");
     setSuccess("");
+
     try {
-      let data = await editBill(updateData);
-      if (data && data.status === 200) {
+      let data = await editProduct(formData);
+
+      if (data && data.statusCode === 200) {
         setSuccess("Cập nhập đơn hàng thành công");
         handleClose();
-        window.location.reload();
+        handleGetData();
+        callBackGetList();
       } else {
         setErrMess("Cập nhập đơn hàng thất bại");
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.data) {
-          setErrMess(
-            error.response.data.errMessage || "Cập nhập đơn hàng thất bại",
-          );
-        }
+      if (error.response?.data) {
+        setErrMess(
+          error.response.data.errMessage || "Cập nhập đơn hàng thất bại",
+        );
       }
     }
   };
@@ -164,8 +184,11 @@ const UpdateProduct = ({
                 <Form.Item label={<span>Tên</span>} name="name">
                   <Input
                     type="text"
-                    placeholder="Nguyễn Văn A"
+                    placeholder="Hạt dẻ"
                     name="name"
+                    onChange={(e) => {
+                      handleOnChange(e, "name");
+                    }}
                     value={productDetail.name}
                     id="name"
                   ></Input>
@@ -183,6 +206,9 @@ const UpdateProduct = ({
                   <Input
                     type="text"
                     name="quantity"
+                    onChange={(e) => {
+                      handleOnChange(e, "quantity");
+                    }}
                     value={productDetail.quantity}
                     id="quantity"
                   ></Input>
@@ -211,6 +237,9 @@ const UpdateProduct = ({
                     <Input
                       type="text"
                       name="price"
+                      onChange={(e) => {
+                        handleOnChange(e, "price");
+                      }}
                       value={number_to_price(productDetail.price)}
                       id="price"
                     ></Input>
@@ -223,12 +252,23 @@ const UpdateProduct = ({
                   <Input
                     type="text"
                     name="date"
+                    onChange={(e) => {
+                      handleOnChange(e, "date");
+                    }}
                     value={productDetail.date}
                     id="date"
                   ></Input>
                 </Form.Item>
-                <Form.Item label={<span>Hình ảnh</span>} name="date">
-                  <UploadImgs listImgs={productDetail.img}></UploadImgs>
+                <Form.Item
+                  className="col-span-2"
+                  label={<span>Hình ảnh</span>}
+                  name="date"
+                >
+                  <UploadImgs
+                    listImgs={productDetail.img}
+                    fileList={fileList}
+                    setFileList={setFileList}
+                  ></UploadImgs>
                 </Form.Item>
               </div>
               <div className="w-100 flex justify-center mt-4">

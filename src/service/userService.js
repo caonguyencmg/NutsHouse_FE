@@ -4,8 +4,10 @@ const getAllUsers = (inputId, searchText) => {
   return axios.get(`/api/get-user?id=${inputId}`, { params: { searchText } });
 };
 
-const getAllBills = (searchText, status) => {
-  return axios.get("/api/get-bill", { params: { searchText, status } });
+const getAllBills = (searchText, status, billsCode) => {
+  return axios.get("/api/get-bill", {
+    params: { searchText, status, billsCode },
+  });
 };
 
 const userLogin = (data) => {

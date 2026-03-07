@@ -1,7 +1,14 @@
 import axios from "../axios";
 
-const getListProduct = () => {
-  return axios.get("/product/get-list");
+const getListProduct = (status) => {
+  return axios.get("/product/get-list", { params: { status } });
 };
 
-export { getListProduct };
+const editProduct = (data) => {
+  return axios.put("/product/edit-product", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export { getListProduct, editProduct };

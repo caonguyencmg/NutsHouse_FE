@@ -136,28 +136,6 @@ body {
 .ant-upload-list-picture-card .ant-upload-list-item:hover {
   background: transparent;
 }
-.ant-upload-list-picture-card
-  .ant-upload-list-item-info
-  + .ant-upload-list-item-actions,
-.ant-upload-list-picture-card .ant-upload-list-item-actions {
-  opacity: 0;
-  svg {
-    fill: white;
-    font-size: 20px;
-    margin: 0 4px;
-  }
-}
-.ant-upload-list-picture-card
-  .ant-upload-list-item-info:hover
-  + .ant-upload-list-item-actions,
-.ant-upload-list-picture-card .ant-upload-list-item-actions:hover {
-  opacity: 1;
-  svg {
-    fill: white;
-    font-size: 20px;
-    margin: 0 4px;
-  }
-}
 
 .card-slider {
   max-width: 600px;
