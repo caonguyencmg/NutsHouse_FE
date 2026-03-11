@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../component/layout/Header";
 import { Form, Input } from "antd";
 import { getAllBills } from "../service/userService";
 import { toast } from "react-toastify";
 import { number_to_price } from "../helper/common";
+import { getListProduct } from "../service/productService";
 
 const SearchBill = () => {
   const [billCode, setBillCode] = useState("");
-  const [billDetail, setBillDetail] = useState([]);
+  const [billDetail, setBillDetail] = useState();
+  const [listProducts, setListProducts] = useState([]);
   const [search, setSearch] = useState(false);
   const [form] = Form.useForm();
+
   const handleOnChange = (value, id) => {
     setBillCode(value);
+  };
+  const getListProducts = async () => {
+    let response = await getListProduct();
+    if (response && response.statusCode === 200) {
+      const products = response.products;
+      setListProducts(products);
+    }
+  };
+
+  const handleMapProducts = (productIds) => {
+    let arrProducts = JSON.parse(productIds);
+    const productsDetail = arrProducts.map((item) => {
+      const name = listProducts.find((p) => p.id === item.productId)?.name;
+
+      return {
+        ...item,
+        name: name ? name : "",
+      };
+    });
+    let products = productsDetail.map(
+      (item) => item.quantity + " " + item.name,
+    );
+    return products.join(", ");
   };
 
   const handleSubmit = async () => {
@@ -40,6 +66,10 @@ const SearchBill = () => {
       }
     }
   };
+
+  useEffect(() => {
+    getListProducts();
+  }, []);
 
   return (
     <>
@@ -111,7 +141,9 @@ const SearchBill = () => {
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Đơn hàng: </div>
-              <span className="font-medium">{billDetail.billsCode}</span>
+              <span className="font-medium max-w-[300px]">
+                {handleMapProducts(billDetail.productId)}
+              </span>
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Giá tiền: </div>
