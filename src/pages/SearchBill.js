@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import Header from "../component/layout/Header";
 import { Form, Input } from "antd";
-import { getAllBills, userLogin } from "../service/userService";
+import { getAllBills } from "../service/userService";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { isLogin } from "../reducers/authReducer";
 import { number_to_price } from "../helper/common";
 
 const SearchBill = () => {
   const [billCode, setBillCode] = useState("");
   const [billDetail, setBillDetail] = useState([]);
+  const [search, setSearch] = useState(false);
   const [form] = Form.useForm();
   const handleOnChange = (value, id) => {
     setBillCode(value);
   };
 
   const handleSubmit = async () => {
+    setSearch(false);
     try {
       let response = await getAllBills(null, null, billCode);
 
-      console.log("🚀 ~ handleSubmit ~ response:", response);
       if (response && response.status === 200) {
-        setBillDetail(response.bills);
+        setBillDetail(response.bills[0]);
       } else {
         toast.error(
           response?.errMessage || "Lấy thông tin thất bại. Vui lòng thử lại.",
@@ -31,6 +29,7 @@ const SearchBill = () => {
           },
         );
       }
+      setSearch(true);
     } catch (error) {
       if (error.response) {
         if (error.response.data) {
@@ -93,59 +92,63 @@ const SearchBill = () => {
             </div>
           </Form>
         </div>
-        {billDetail[0] ? (
+
+        {billDetail ? (
           <div className="max-w-[500px] w-full mt-5 border py-2 px-4 rounded-md text-base">
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Mã đơn hàng: </div>
               <span className="font-medium text-red-500">
-                {billDetail[0].billsCode}
+                {billDetail.billsCode}
               </span>
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Họ và tên: </div>
-              <span className="font-medium">{billDetail[0].fullName}</span>
+              <span className="font-medium">{billDetail.fullName}</span>
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Số điện thoại: </div>
-              <span className="font-medium">{billDetail[0].phoneNumber}</span>
+              <span className="font-medium">{billDetail.phoneNumber}</span>
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Đơn hàng: </div>
-              <span className="font-medium">{billDetail[0].billsCode}</span>
+              <span className="font-medium">{billDetail.billsCode}</span>
             </div>
             <div className="flex justify-between border-b mb-2 pb-3 border-dashed border-gray-400">
               <div className="font-medium">Giá tiền: </div>
               <span className="font-medium">
-                {number_to_price(billDetail[0].totalPrice)} VND
+                {number_to_price(billDetail.totalPrice)} VND
               </span>
             </div>
             <div className="flex justify-between mb-2">
               <div className="font-medium">Trạng thái: </div>
               <span
                 className={`font-bold text-xl ${
-                  billDetail[0].status === 0
+                  billDetail.status === 0
                     ? "text-red-500"
-                    : billDetail[0].status === 1
+                    : billDetail.status === 1
                       ? "text-yellow-500"
-                      : billDetail[0].status === 2
+                      : billDetail.status === 2
                         ? "text-blue-500"
                         : "text-green-500"
                 }`}
               >
-                {billDetail[0].status === 0
+                {billDetail.status === 0
                   ? "Chờ xác nhận"
-                  : billDetail[0].status === 1
+                  : billDetail.status === 1
                     ? "Đang đóng hàng"
-                    : billDetail[0].status === 2
+                    : billDetail.status === 2
                       ? "Đã thanh toán"
                       : "Đã hoàn thành"}
               </span>
             </div>
           </div>
         ) : (
-          <div className="text-red-500 font-semibold text-2xl mt-5">
-            Không tìm thấy mã đơn hàng. Vui lòng kiểm tra lại.
-          </div>
+          !billDetail &&
+          search && (
+            <div className="text-red-500 font-semibold text-2xl mt-5">
+              Không tìm thấy mã đơn hàng. Vui lòng kiểm tra lại.
+            </div>
+          )
         )}
       </div>
     </>
