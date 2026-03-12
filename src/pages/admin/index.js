@@ -78,10 +78,10 @@ const Admin = () => {
   }, []);
 
   return (
-    <div>
+    <div className="pb-10">
       <Header></Header>
 
-      <h1 className="flex items-center justify-center mt-[106px] mb-3 text-3xl">
+      <h1 className="flex items-center justify-center pt-[106px] mb-3 text-3xl">
         Danh sách Đơn hàng
       </h1>
       <div className="flex gap-6 justify-end px-6">
@@ -154,7 +154,7 @@ const Admin = () => {
           </button>
         </div>
       </div>
-      <div className="w-full p-2 overflow-x-scroll">
+      <div className="w-full p-2 overflow-x-auto">
         <table className="w-full border border-collapse border-slate-400">
           <thead>
             <tr className="bg-gray-400 border">
