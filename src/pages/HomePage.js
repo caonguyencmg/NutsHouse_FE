@@ -59,12 +59,12 @@ const HomePage = () => {
         listProducts={dataBuyProduct}
       ></BuyProducts>
 
-      <div className="w-full p-5 mt-[76px] bg-[url('../assets/img/bg-home.png')] bg-no-repeat bg-contain bg-top">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 container gap-4">
+      <div className="w-full md:p-5 pt-4 mt-[76px] bg-[url('../assets/img/bg-home.png')] bg-no-repeat bg-contain bg-top">
+        <div className="grid md-mobile:grid-cols-1 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 container gap-4 md:!px-5">
           {listProducts.length > 0 &&
             listProducts.map((item) => (
               <div
-                className="min-h-[100px] "
+                className="min-h-[100px] md-mobile:m-auto"
                 onClick={() => handleShowCard(item)}
               >
                 <div
@@ -86,7 +86,7 @@ const HomePage = () => {
                     flex items-end pb-3 justify-center gap-2"
                     >
                       <button
-                        className="px-4 py-2 bg-blue-400 text-white text-sm font-semibold
+                        className="lg:px-4 px-2 py-2 bg-blue-400 text-white text-sm font-semibold
                         rounded-md shadow
                         transition-all duration-200
                         hover:bg-blue-600"
@@ -94,7 +94,7 @@ const HomePage = () => {
                         Thêm vào giỏ
                       </button>
                       <button
-                        className="px-4 py-2 bg-red-500 text-white text-sm font-semibold
+                        className="md:px-4 px-2 py-2 bg-red-500 text-white text-sm font-semibold
                         rounded-md shadow
                         transition-all duration-200
                         hover:bg-red-600"

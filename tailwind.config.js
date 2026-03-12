@@ -11,6 +11,7 @@ module.exports = {
       screens: {
         tablet: { max: "1023px" },
         mobile: { max: "767px" },
+        "md-mobile": { max: "520px" },
         "sm-mobile": { max: "374px" },
       },
     },
