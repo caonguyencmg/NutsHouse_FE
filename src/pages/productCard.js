@@ -65,7 +65,7 @@ const ProductCard = ({
         }}
       ></div>
       <div className="min-h-[100vh] !px-4 !py-6 md:!p-10 container">
-        <div className="p-2 md:p-5 pt-0 md:w-[70%]  rounded-xl  bg-white mx-auto relative z-10 ">
+        <div className="p-2 md:p-5 pt-0 md:w-[85%] lg:w-[70%] rounded-xl bg-white mx-auto relative z-10 ">
           <span
             onClick={() => {
               handleClose();
@@ -89,14 +89,14 @@ const ProductCard = ({
           <h1 className="mb-4 text-3xl font-bold text-center text-black">
             Thêm vào giỏ hàng
           </h1>
-          <div className="overflow-auto md:overflow-hidden max-h-[85vh] grid md:grid-cols-[1fr_1.7fr] gap-6">
+          <div className="overflow-auto md:overflow-hidden max-h-[85vh] grid md:grid-cols-[1fr_1.5fr] lg:grid-cols-[1fr_1.7fr]  gap-6">
             <div className=" w-full rounded-md card-slider">
               <Slider ref={sliderRef} {...settings}>
                 {data?.img?.map((item) => {
                   return (
                     <img
                       src={process.env.REACT_APP_BACKEND_URL + item}
-                      className="rounded-md !w-[250px] !h-[330px]"
+                      className="rounded-md md:!w-[250px] md:!h-[330px] h-[280px]"
                       alt=""
                     />
                   );

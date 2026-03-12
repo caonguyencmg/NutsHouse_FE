@@ -121,8 +121,8 @@ const BuyProducts = ({
           className="absolute inset-0 bg-black bg-opacity-50 cursor-pointer overlay"
           onClick={resetSignup}
         ></div>
-        <div className="min-h-[100vh] !p-10 container">
-          <div className="p-5 pt-0 w-[50%] rounded-xl bg-white mx-auto relative z-10 ">
+        <div className="min-h-[100vh] !px-4 !py-6 md:!p-10 container">
+          <div className="md:p-5 p-3 pt-0 md:w-[85%] lg:w-[50%] rounded-xl bg-white mx-auto relative z-10">
             <span
               onClick={resetSignup}
               className="absolute top-0 right-0 flex items-center justify-center w-10 h-10 p-1 bg-white border border-gray-300 rounded-full cursor-pointer hover:bg-red-400 -translate-y-1/3 translate-x-1/3"
@@ -147,19 +147,19 @@ const BuyProducts = ({
               {listProducts.length > 0 &&
                 listProducts.map((item) => (
                   <div
-                    className="px-4 py-2 border border-gray-300 mb-2 items-center rounded-lg grid gap-x-5 lg:grid-cols-[0.3fr_8fr]"
+                    className="px-3 py-2 border border-gray-300 mb-2 items-center rounded-lg grid gap-x-5 grid-cols-[0.3fr_8fr]"
                     key={item.id}
                   >
-                    <div className="min-w-[64px] w-full xl:max-h-[76px]  flex items-center justify-center overflow-hidden">
+                    <div className="min-w-[64px] w-full xl:max-h-[76px] mobile:w-[90px] flex items-center justify-center overflow-hidden">
                       <img
-                        src={process.env.REACT_APP_BACKEND_URL + item?.img}
+                        src={process.env.REACT_APP_BACKEND_URL + item?.img?.[0]}
                         alt=""
-                        className="max-w-full max-h-full object-contain"
+                        className="max-w-full max-h-full object-contain rounded aspect-[8/10]"
                       />
                     </div>
                     <div className="lg:grid lg:gap-x-5 gap-x-1 grid-cols-[4fr_1.6fr] items-center">
                       <div>
-                        <div className=" text-gray-700 font-semibold">
+                        <div className=" text-gray-700 font-semibold text-base">
                           {item?.name}
                         </div>
                         <div className="min-w-[180px]">
