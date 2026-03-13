@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../component/layout/Header";
 import { number_to_price } from "../../helper/common";
-import { deleteBill } from "../../service/userService";
-import { getListProduct } from "../../service/productService";
+import { deleteProduct, getListProduct } from "../../service/productService";
 import DeletePopup from "../../component/layout/deletePopup";
 import { toast } from "react-toastify";
 import UpdateProduct from "../updateProduct.js";
@@ -27,19 +26,20 @@ const Products = () => {
     }
   };
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteProduct = (id) => {
     setDeleteProductId(id);
     setShowDeleteModal(true);
   };
 
   const handleAgreeDelete = async () => {
-    let response = await deleteBill({ id: deleteProductId });
+    let response = await deleteProduct({ id: deleteProductId });
     if (response && response.status === 200) {
-      toast.success("Xoá đơn hàng thành công!", {
+      toast.success("Xoá sản phẩm thành công!", {
         autoClose: 300,
       });
       setShowDeleteModal(false);
       setDeleteProductId(undefined);
+      getListProducts();
     }
   };
 
@@ -197,7 +197,7 @@ const Products = () => {
                       </button>
                       <button
                         className="p-2 bg-red-400 rounded-md"
-                        onClick={() => handleDeleteUser(item.id)}
+                        onClick={() => handleDeleteProduct(item.id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +227,7 @@ const Products = () => {
           setShowDeleteModal(false);
           setDeleteProductId(undefined);
         }}
-        content="Bạn có chắc muốn xoá đơn hàng này?"
+        content="Bạn có chắc muốn xoá sản phẩm này?"
         handleAgree={handleAgreeDelete}
       ></DeletePopup>
       <UpdateProduct
