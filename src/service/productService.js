@@ -11,4 +11,9 @@ const editProduct = (data) => {
     },
   });
 };
-export { getListProduct, editProduct };
+
+const deleteProduct = (id) => {
+  return axios.put("/product/delete-product", id);
+};
+
+export { getListProduct, editProduct, deleteProduct };
