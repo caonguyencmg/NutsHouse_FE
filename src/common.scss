@@ -189,3 +189,18 @@ body {
   box-sizing: border-box;
   transition: all 0.3s;
 }
+
+.login__input,
+.ant-picker,
+.ant-select-selector {
+  height: 44px !important;
+  background: rgba(221, 221, 221, 0.1);
+  border: 1px solid #dddddd;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-select-selection-item {
+  line-height: 44px !important;
+}

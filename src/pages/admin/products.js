@@ -6,6 +6,7 @@ import { getListProduct } from "../../service/productService";
 import DeletePopup from "../../component/layout/deletePopup";
 import { toast } from "react-toastify";
 import UpdateProduct from "../updateProduct.js";
+import { Select } from "antd";
 
 const Products = () => {
   const [listProducts, setListProducts] = useState([]);
@@ -55,50 +56,48 @@ const Products = () => {
     <div className="pb-10">
       <Header></Header>
 
-      <h1 className="flex items-center justify-center pt-[106px] mb-3 text-3xl">
+      <h1 className="flex items-center justify-center pt-[90px] mb-3 text-3xl">
         Danh sách Hàng hoá
       </h1>
-      <div className="flex gap-6 justify-end px-6">
+      <div className="flex gap-6 justify-end px-2 md:px-6">
         <div>
-          <select
-            name="status"
-            id="status"
-            className="w-full min-w-[180px] h-11 bg-[#e5e7eb] rounded-md px-2"
+          <Select
+            value={select}
+            className="min-w-[180px]"
+            size="large"
             onChange={(e) => {
               setSelect(e.target.value);
               getListProducts(e.target.value);
             }}
-            value={select}
-          >
-            <option
-              value={undefined}
-              className=" bg-white font-medium border-b border-gray-400"
-            >
-              Tất cả trạng thái
-            </option>
-            <option
-              value={1}
-              className="text-green-500 bg-white font-medium border-b border-gray-400"
-            >
-              Còn hàng
-            </option>
-            <option
-              value={0}
-              className="text-red-500 bg-white font-medium border-b border-gray-400"
-            >
-              Hết hàng
-            </option>
-          </select>
+            options={[
+              {
+                value: "",
+                label: <span className="font-medium">Tất cả trạng thái</span>,
+              },
+              {
+                value: "1",
+                label: (
+                  <span className="text-green-500 font-medium">Còn hàng</span>
+                ),
+              },
+              {
+                value: "0",
+                label: (
+                  <span className="text-red-500 font-medium">Hết hàng</span>
+                ),
+              },
+            ]}
+          />
         </div>
         <div className="flex gap-2">
           <button
-            className="p-2 mb-4 min-w-[80px] bg-red-400 rounded-md cursor-pointer"
+            className="h-11 mb-4 min-w-[80px] bg-blue-400 text-white font-medium rounded-md cursor-pointer"
             onClick={() => {
               getListProducts();
               setSelect("");
             }}
           >
-            Reset
+            Thêm mới
           </button>
         </div>
       </div>
@@ -109,7 +108,7 @@ const Products = () => {
               <th className="border border-slate-600  min-w-[180px]">
                 Tên hàng
               </th>
-              <th className="border border-slate-600 max-w-[350px]">
+              <th className="border border-slate-600 min-w-[280px] max-w-[350px]">
                 Giới thiệu
               </th>
               <th className="border border-slate-600 min-w-[120px]">Ảnh</th>
