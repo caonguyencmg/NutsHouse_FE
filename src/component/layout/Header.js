@@ -31,7 +31,7 @@ const Header = () => {
     { name: "Quản lý đơn", link: "/admin", isLogin: true },
     { name: "Quản lý sản phẩm", link: "/admin/import", isLogin: true },
     { name: "Đơn hàng của tôi", link: "/user/orders", isLogin: false },
-    { name: "Đăng xuất", isLogin: true },
+    { name: "Đăng xuất", isLogin: true, type: "logout" },
     // {
     //   name: "Cuộc thi",
     //   link: ["/maraton-100", "/maraton-500", "/maraton-10", "/maraton-5"],
@@ -96,7 +96,7 @@ const Header = () => {
                 <button onClick={() => setShowMobileMenu(false)}>✕</button>
               </div>
 
-              <ul className="flex flex-col p-4 gap-2">
+              <ul className="flex flex-col p-2 gap-2 last:!text-red-500">
                 {headerMenu.map((item) => {
                   if (item.isLogin && !isLogin) return null;
                   if (!item.isLogin && isLogin) return null;
@@ -104,11 +104,12 @@ const Header = () => {
                     <li key={item.name}>
                       <NavLink
                         to={Array.isArray(item.link) ? item.link[0] : item.link}
-                        className={({ isActive }) =>
-                          `block px-3 py-2 rounded-lg text-lg ${
-                            activeLink(item) ? "bg-[#91D7DB] font-semibold" : ""
-                          }`
+                        className={`block p-2 rounded-lg text-lg text-[#002025]  ${
+                          activeLink(item)
+                            ? "bg-[#efefef] font-bold"
+                            : "font-semibold"
                         }
+                        ${item.type === "logout" ? "text-red-500" : ""}`}
                         onClick={() => setShowMobileMenu(false)}
                       >
                         {item.name}
@@ -201,9 +202,9 @@ const Header = () => {
               </ul>
             </div>
           </div>
-          <div className="flex gap-1 min-w-[80px]">
+          <div className="flex gap-3 min-w-[90px]">
             <a
-              className="flex items-center md:mr-4 relative cursor-pointer"
+              className="flex items-center md:mr-2 relative cursor-pointer"
               href="/card"
             >
               <span>

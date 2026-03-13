@@ -6,7 +6,7 @@ import { getListProduct } from "../../service/productService";
 import DeletePopup from "../../component/layout/deletePopup";
 import { toast } from "react-toastify";
 import UpdateBill from "../updateBill";
-import { Input } from "antd";
+import { Input, Select } from "antd";
 
 const Admin = () => {
   const [arrBill, setArrBill] = useState([]);
@@ -18,6 +18,7 @@ const Admin = () => {
   const [searchText, setSearchText] = useState("");
   const [select, setSelect] = useState("");
 
+  const { Option } = Select;
   const getListBills = async (searchText, status) => {
     let response = await getAllBills(searchText, status);
     if (response && response.status === 200) {
@@ -81,51 +82,58 @@ const Admin = () => {
     <div className="pb-10">
       <Header></Header>
 
-      <h1 className="flex items-center justify-center pt-[106px] mb-3 text-3xl">
+      <h1 className="flex items-center justify-center pt-[90px] mb-3 text-3xl">
         Danh sách Đơn hàng
       </h1>
-      <div className="flex gap-6 justify-end px-6">
+      <div className="md:flex gap-2 justify-end px-2 md:px-6">
         <div>
-          <select
-            name="status"
-            id="status"
-            className="w-full min-w-[180px] h-11 bg-[#e5e7eb] rounded-md px-2"
-            onChange={(e) => {
-              setSelect(e.target.value);
-              getListBills(searchText, e.target.value);
-            }}
+          <Select
             value={select}
-          >
-            <option
-              value={""}
-              className=" bg-white font-medium border-b border-gray-400"
-            >
-              Tất cả trạng thái
-            </option>
-            <option
-              value="0"
-              className="text-red-500 bg-white font-medium border-b border-gray-400"
-            >
-              Chờ xác nhận
-            </option>
-            <option
-              value="1"
-              className="text-yellow-400 bg-white font-medium border-b border-gray-400"
-            >
-              Đang đóng hàng
-            </option>
-            <option
-              value="2"
-              className="text-blue-400 bg-white font-medium border-b border-gray-400"
-            >
-              Đã thanh toán
-            </option>
-            <option value="3" className="text-green-500 bg-white font-medium">
-              Đã hoàn thành
-            </option>
-          </select>
+            className="min-w-[180px]"
+            size="large"
+            onChange={(value) => {
+              setSelect(value);
+              getListBills(searchText, value);
+            }}
+            options={[
+              {
+                value: "",
+                label: <span className="font-medium">Tất cả trạng thái</span>,
+              },
+              {
+                value: "0",
+                label: (
+                  <span className="text-red-500 font-medium">Chờ xác nhận</span>
+                ),
+              },
+              {
+                value: "1",
+                label: (
+                  <span className="text-yellow-400 font-medium">
+                    Đang đóng hàng
+                  </span>
+                ),
+              },
+              {
+                value: "2",
+                label: (
+                  <span className="text-blue-400 font-medium">
+                    Đã thanh toán
+                  </span>
+                ),
+              },
+              {
+                value: "3",
+                label: (
+                  <span className="text-green-500 font-medium">
+                    Đã hoàn thành
+                  </span>
+                ),
+              },
+            ]}
+          />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mobile:mt-3">
           <Input
             type="text"
             onChange={(e) => {
@@ -133,17 +141,17 @@ const Admin = () => {
             }}
             name="searchText"
             id="searchText"
-            className="!border !border-gray-500 !bg-white"
+            className="!bg-white"
             value={searchText || ""}
           ></Input>
           <button
-            className="p-2 mb-4 min-w-[100px] bg-blue-400 rounded-md cursor-pointer"
+            className="h-11 mb-4 min-w-[100px] bg-blue-400 text-white font-medium rounded-md cursor-pointer"
             onClick={() => getListBills(searchText, select)}
           >
             Tìm kiếm
           </button>
           <button
-            className="p-2 mb-4 min-w-[80px] bg-red-400 rounded-md cursor-pointer"
+            className="h-11 mb-4 min-w-[80px] bg-red-400 text-white font-medium rounded-md cursor-pointer"
             onClick={() => {
               getListBills();
               setSearchText("");
